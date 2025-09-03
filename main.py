@@ -1,9 +1,18 @@
 import random
 
 
+def set_characters_list(chars):
+    for char in chars:
+        if char.stars == 3:
+            three_stars_characters.append(char)
+        elif char.stars == 4:
+            four_stars_characters.append(char)
+        elif char.stars == 5:
+            five_stars_characters.append(char)
+
+
 def charactersinfo(char):
     print(f'\nName: {char.name} {"★" * char.stars}')
-    print(f'Weapon: {char.weap_type}')
 
 
 def menuopc():
@@ -20,13 +29,63 @@ def summonmenu():
     return int(input('Digite a opção que deseja: '))
 
 
+def summon_banners(pity, opc1):
+
+    match opc1:
+
+        case 1:
+
+            summon = random.randint(1, 100)
+            if pity == 99:
+                char = random.choice(five_stars_characters)
+                print(f'{char.name} {"★" * 5}')
+                pity = 0
+            elif 1 <= summon <= 79:
+                char = random.choice(three_stars_characters)
+                print(f'{char.name} {"★" * 3}')
+                pity += 1
+            elif 80 <= summon <= 99:
+                char = random.choice(four_stars_characters)
+                print(f'{char.name} {"★" * 4}')
+                pity += 1
+            elif summon == 100:
+                char = random.choice(five_stars_characters)
+                print(f'{char.name} {"★" * 5}')
+                pity = 0
+
+            return pity
+
+        case 2:
+
+            print('')
+            for i in range(10):
+                summon = random.randint(1, 100)
+                if pity == 99:
+                    char = random.choice(five_stars_characters)
+                    print(f'{char.name} {"★" * 5}')
+                    pity = 0
+                elif 1 <= summon <= 79:
+                    char = random.choice(three_stars_characters)
+                    print(f'{char.name} {"★" * 3}')
+                    pity += 1
+                elif 80 <= summon <= 99:
+                    char = random.choice(four_stars_characters)
+                    print(f'{char.name} {"★" * 4}')
+                    pity += 1
+                elif summon == 100:
+                    char = random.choice(five_stars_characters)
+                    print(f'{char.name} {"★" * 5}')
+                    pity = 0
+
+            return pity
+
+
 class Characters:
 
-    def __init__(self, name, hp, damage, weap_type, stars):
+    def __init__(self, name, hp, damage, stars):
         self.name = name
         self.hp = hp
         self.damage = damage
-        self.weap_type = weap_type
         self.stars = stars
 
 
@@ -40,8 +99,18 @@ class Enemies:
 
 
 characters = list()
-characters.append(Characters('Grassi', 10, 10, 'Scythe', 5))
-characters.append(Characters('Stacoviaki', 15, 15, 'Pistols', 4))
+three_stars_characters = list()
+four_stars_characters = list()
+five_stars_characters = list()
+characters.append(Characters('Stark', 20, 20, 5))
+characters.append(Characters('Ichigo', 25, 15, 5))
+characters.append(Characters('Dio', 10, 10, 4))
+characters.append(Characters('Killua', 15, 7, 4))
+characters.append(Characters('Luffy', 5, 5, 3))
+characters.append(Characters('Orihime', 3, 3, 3))
+
+set_characters_list(characters)
+
 
 enemies = list()
 enemies.append(Enemies('Goblin', 100, 5, 3))
@@ -65,35 +134,12 @@ while True:
 
                     case 1:
 
-                        summon = random.randint(1, 100)
-                        if cont == 99:
-                            print('\n5 estrelas')
-                            cont = 0
-                        elif 1 <= summon <= 79:
-                            print('\n3 estrelas')
-                            cont += 1
-                        elif 80 <= summon <= 99:
-                            print('\n4 estrelas')
-                            cont += 1
-                        elif summon == 100:
-                            print('\n5 estrelas')
-                            cont = 0
+                        cont = summon_banners(cont, opc_banner)
+
                     case 2:
-                        print('')
-                        for i in range(10):
-                            summon = random.randint(1, 100)
-                            if cont == 99:
-                                print('5 estrelas')
-                                cont = 0
-                            elif 1 <= summon <= 79:
-                                print('3 estrelas')
-                                cont += 1
-                            elif 80 <= summon <= 99:
-                                print('4 estrelas')
-                                cont += 1
-                            elif summon == 100:
-                                print('5 estrelas')
-                                cont = 0
+
+                        cont = summon_banners(cont, opc_banner)
+
                     case 3:
                         break
                     case _:
